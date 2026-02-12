@@ -1,0 +1,122 @@
+<div
+  class="popup-overlay"
+  *ngIf="isOpen && mediaItem"
+  (click)="onOverlayClick($event)"
+>
+  <div class="popup-container">
+    <!-- Close Button -->
+    <button class="close-button" (click)="onClose()" aria-label="Close popup">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M18 6L6 18M6 6l12 12"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+
+    <!-- Media Content Area (extensible via ng-content) -->
+    <div class="media-content">
+      <ng-content select="[media-content]"></ng-content>
+
+      <!-- Default rendering if no custom content -->
+      <img
+        *ngIf="mediaItem.type === 'image'"
+        [src]="mediaItem.thumbnailUrl"
+        [alt]="mediaItem.title"
+        class="media-image"
+      />
+
+      <video
+        *ngIf="mediaItem.type === 'video'"
+        [src]="mediaItem.downloadUrl"
+        controls
+        class="media-video"
+      >
+        Your browser does not support the video tag.
+      </video>
+
+      <iframe
+        *ngIf="mediaItem.type === 'pdf'"
+        [src]="mediaItem.downloadUrl"
+        class="media-pdf"
+        title="PDF viewer"
+      ></iframe>
+    </div>
+
+    <!-- Media Information -->
+    <div class="media-info">
+      <div class="info-header">
+        <h2 class="media-title">{{ mediaItem.title }}</h2>
+        <span class="media-type-badge" [ngClass]="'badge-' + mediaItem.type">
+          {{ mediaItem.type.toUpperCase() }}
+        </span>
+      </div>
+
+      <!-- Additional info slot -->
+      <div class="additional-info">
+        <ng-content select="[additional-info]"></ng-content>
+      </div>
+
+      <!-- Metadata Grid -->
+      <div class="metadata-grid">
+        <div class="metadata-item">
+          <span class="metadata-label">Upload Date</span>
+          <span class="metadata-value">{{
+            formatDate(mediaItem.uploadDate)
+          }}</span>
+        </div>
+
+        <div class="metadata-item">
+          <span class="metadata-label">File Size</span>
+          <span class="metadata-value">{{
+            formatFileSize(mediaItem.size)
+          }}</span>
+        </div>
+
+        <div class="metadata-item" *ngIf="mediaItem.dimensions">
+          <span class="metadata-label">Dimensions</span>
+          <span class="metadata-value"
+            >{{ mediaItem.dimensions.width }} ×
+            {{ mediaItem.dimensions.height }}</span
+          >
+        </div>
+
+        <div class="metadata-item" *ngIf="mediaItem.duration">
+          <span class="metadata-label">Duration</span>
+          <span class="metadata-value">{{ mediaItem.duration }}</span>
+        </div>
+
+        <div class="metadata-item" *ngIf="mediaItem.views !== undefined">
+          <span class="metadata-label">Views</span>
+          <span class="metadata-value">{{ formatViews(mediaItem.views) }}</span>
+        </div>
+
+        <div class="metadata-item" *ngIf="mediaItem.pages">
+          <span class="metadata-label">Pages</span>
+          <span class="metadata-value">{{ mediaItem.pages }}</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <a [href]="mediaItem.downloadUrl" target="_blank" class="btn-download">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M17.5 12.5v3.333A1.667 1.667 0 0 1 15.833 17.5H4.167A1.667 1.667 0 0 1 2.5 15.833V12.5M14.167 9.167L10 13.333m0 0L5.833 9.167M10 13.333V2.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Download
+        </a>
+
+        <ng-content select="[action-buttons]"></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

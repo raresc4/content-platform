@@ -1,0 +1,12 @@
+<app-content-popup
+  [mediaItem]="mediaItem"
+  [isOpen]="isOpen"
+  (closePopup)="onClose()"
+>
+  <div additional-info *ngIf="mediaItem?.dimensions">
+    <p class="image-description">
+      High-resolution image with {{ mediaItem!.dimensions!.width }} ×
+      {{ mediaItem!.dimensions!.height }} pixels
+    </p>
+  </div>
+</app-content-popup>

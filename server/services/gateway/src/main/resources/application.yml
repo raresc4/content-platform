@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    compatibility-verifier:
+      enabled: false
+    gateway:
+      routes:
+        - id: content-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/content-service/**
+          filters:
+            - StripPrefix=1
+            - name: CircuitBreaker
+              args:
+                  name: contentServiceCB
+                  fallbackUri: forward:/fallback/content
+        - id: upload-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/upload-service/**
+          filters:
+            - StripPrefix=1
+            - name: CircuitBreaker
+              args:
+                  name: uploadServiceCB
+                  fallbackUri: forward:/fallback/upload
+        - id: user-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - StripPrefix=1
+            - name: CircuitBreaker
+              args:
+                  name: userServiceCB
+                  fallbackUri: forward:/fallback/user
+server:
+  port: 8081

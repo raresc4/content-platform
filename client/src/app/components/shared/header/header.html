@@ -1,0 +1,175 @@
+<header class="header">
+  <!-- Mobile Menu Button -->
+  <button class="mobile-menu-button" (click)="toggleMobileMenu()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M3 12h18M3 6h18M3 18h18"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+    </svg>
+  </button>
+
+  <div class="header-left">
+    <div class="logo">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect width="24" height="24" rx="6" fill="var(--color-primary)" />
+        <path d="M8 8h8v2H8V8zm0 4h8v2H8v-2zm0 4h5v2H8v-2z" fill="white" />
+      </svg>
+    </div>
+    <span class="logo-text">Media Library</span>
+  </div>
+
+  <div class="header-center">
+    <div class="search-bar">
+      <svg
+        class="search-icon"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+      >
+        <path
+          d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <input
+        type="text"
+        [ngModel]="searchQuery"
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Search your content..."
+        class="search-input"
+      />
+    </div>
+
+    <div class="content-tabs">
+      <button
+        *ngFor="let tab of contentTabs"
+        [class.active]="tab.active"
+        (click)="onContentTabClick(tab.id)"
+        class="content-tab"
+      >
+        {{ tab.label }}
+      </button>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <!-- Mobile Search Button -->
+    <button class="mobile-search-button" (click)="toggleMobileSearch()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path
+          d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+
+    <div class="upload-container">
+      <button class="upload-button" (click)="onUploadButtonClick()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path
+            d="M10 4v12M4 10h12"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+        <span class="upload-text">Upload</span>
+      </button>
+
+      <div class="upload-dropdown" *ngIf="showUploadDropdown">
+        <button
+          *ngFor="let option of uploadOptions"
+          (click)="onUploadOptionClick(option)"
+          class="upload-option"
+        >
+          {{ option.label }}
+        </button>
+      </div>
+    </div>
+
+    <button class="user-icon" (click)="onUserIconClick()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+        <circle cx="12" cy="10" r="3" fill="currentColor" />
+        <path
+          d="M6.168 18.849A6.5 6.5 0 0 1 12 15a6.5 6.5 0 0 1 5.832 3.849"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Search Overlay -->
+  <div class="mobile-search-overlay" *ngIf="showMobileSearch">
+    <div class="mobile-search-content">
+      <div class="mobile-search-header">
+        <input
+          type="text"
+          [ngModel]="searchQuery"
+          (ngModelChange)="onSearchChange($event)"
+          placeholder="Search your content..."
+          class="mobile-search-input"
+          autofocus
+        />
+        <button class="close-button" (click)="closeMobileSearch()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M18 6L6 18M6 6l12 12"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" *ngIf="showMobileMenu">
+    <div class="mobile-menu-content">
+      <div class="mobile-menu-header">
+        <h3>Navigation</h3>
+        <button class="close-button" (click)="closeMobileMenu()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M18 6L6 18M6 6l12 12"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <nav class="mobile-nav">
+        <button
+          *ngFor="let tab of contentTabs"
+          [class.active]="tab.active"
+          (click)="onContentTabClick(tab.id); closeMobileMenu()"
+          class="mobile-nav-item"
+        >
+          {{ tab.label }}
+        </button>
+      </nav>
+    </div>
+  </div>
+</header>

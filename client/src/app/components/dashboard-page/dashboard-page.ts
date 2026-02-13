@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MediaService } from '../../services/media.service';
 import {
@@ -11,15 +12,17 @@ import {
   UploadOption,
 } from '../../models/media-item.model';
 import { ImagePopup } from '../image-popup/image-popup';
+import { Header } from '../shared/header/header';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [CommonModule, FormsModule, ImagePopup],
+  imports: [CommonModule, FormsModule, ImagePopup, Header],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
 })
 export class DashboardPage implements OnInit, OnDestroy {
   mediaService = inject(MediaService);
+  router = inject(Router);
 
   showUploadDropdown = false;
   mediaItems: MediaItem[] = [];
@@ -130,6 +133,11 @@ export class DashboardPage implements OnInit, OnDestroy {
     console.log('Upload:', option.label);
     this.showUploadDropdown = false;
     // Implement upload logic here
+  }
+
+  handleUserIconClick(): void {
+    this.router.navigate(['/profile']);
+    // Navigate to profile page or show user menu
   }
 
   downloadMedia(item: MediaItem): void {
